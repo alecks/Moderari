@@ -10,6 +10,6 @@ db:
   database: 0
 
 colours:
-  info: 0x30ffce
+  info: 0x3b5bf9
   warning: 0xf79365
   error: 0xf76580
