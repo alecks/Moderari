@@ -54,46 +54,41 @@ func warn(ctx *gommand.Context) error {
 		reason = argReason.(string)
 	}
 
-	key := "user:" + member.User.ID.String()
-	oldString, err := db.Client.Get(key).Result()
-	if err == db.Nil {
-		oldString = "{}"
-	} else if err != nil {
-		return err
-	}
-
-	old := db.UserModel{}
-	if err := json.Unmarshal([]byte(oldString), &old); err != nil {
-		return err
-	}
-
 	id := uuid.New().String()
-	warning := db.WarnModel{
-		Reason:    reason,
-		Severity:  severity,
-		Moderator: ctx.Message.Author.ID.String(),
-		Time:      time.Now().Unix(),
-	}
+	go func() {
+		key := "user:" + member.User.ID.String()
+		oldString, err := db.Client.Get(key).Result()
+		if err == db.Nil {
+			oldString = "{}"
+		}
 
-	if old.Warns == nil {
-		old.Warns = map[string]map[string]db.WarnModel{}
-	}
-	guildID := ctx.Message.GuildID.String()
-	if old.Warns[guildID] == nil {
-		old.Warns[guildID] = map[string]db.WarnModel{}
-	}
+		old := db.UserModel{}
+		json.Unmarshal([]byte(oldString), &old)
 
-	old.Warns[guildID][id] = warning
+		warning := db.WarnModel{
+			Reason:    reason,
+			Severity:  severity,
+			Moderator: ctx.Message.Author.ID.String(),
+			Time:      time.Now().Unix(),
+		}
 
-	new, err := json.Marshal(old)
-	if err != nil {
-		return err
-	}
-	go db.Client.Set(key, new, 0)
+		if old.Warns == nil {
+			old.Warns = map[string]map[string]db.WarnModel{}
+		}
+		guildID := ctx.Message.GuildID.String()
+		if old.Warns[guildID] == nil {
+			old.Warns[guildID] = map[string]db.WarnModel{}
+		}
 
-	_, err = ctx.Reply(embeds.Info(
+		old.Warns[guildID][id] = warning
+
+		new, _ := json.Marshal(old)
+		db.Client.Set(key, new, 0)
+	}()
+
+	_, err := ctx.Reply(embeds.Info(
 		"Warned",
-		fmt.Sprintf("**%s** has been warned by **%s** for \"%s\".", member.User.Username, ctx.Message.Author.Username, warning.Reason),
+		fmt.Sprintf("**%s** has been warned by **%s** for \"%s\".", member.User.Username, ctx.Message.Author.Username, reason),
 		id,
 	))
 	return err
