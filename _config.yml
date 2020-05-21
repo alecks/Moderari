@@ -1,0 +1,15 @@
+# RENAME THIS FILE TO config.yml BEFORE STARTING THE BOT.
+
+token: bot_token
+prefix: "!"
+sentry-dsn: https://your@sentry.ingest.sentry.io/dsn
+
+db:
+  address: 127.0.0.1:6379
+  password: ""
+  database: 0
+
+colours:
+  info: 0x30ffce
+  warning: 0xf79365
+  error: 0xf76580
