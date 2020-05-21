@@ -5,4 +5,4 @@ COPY . .
 
 RUN go install -v ./cmd/bot
 
-CMD ["moderari"]
+CMD ["bot"]
