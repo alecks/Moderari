@@ -57,7 +57,6 @@ func main() {
 	commands.Register(router)
 
 	router.Hook(client)
-
 	chk(client.StayConnectedUntilInterrupted(context.Background()))
 }
 
