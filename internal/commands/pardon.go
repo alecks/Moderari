@@ -59,8 +59,8 @@ func pardon(ctx *gommand.Context) error {
 	}
 
 	go func() {
-		new, _ := json.Marshal(old)
-		db.Client.Set(key, new, 0)
+		bytes, _ := json.Marshal(old)
+		db.Client.Set(key, bytes, 0)
 	}()
 
 	_, err = ctx.Reply(embeds.Info("Pardoned", strconv.Itoa(removedWarns)+" warns were removed.", ""))
