@@ -1,4 +1,3 @@
 #!/bin/sh
-echo "building: ./cmd/bot"
-go build ./cmd/bot
-echo "build finished"
+docker build -t moderari:latest .
+docker run -d --rm --net host moderari:latest
