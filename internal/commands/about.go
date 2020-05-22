@@ -25,7 +25,7 @@ func about(ctx *gommand.Context) error {
 		"About "+strings.Title(ctx.BotUser.Username),
 		"This is an instance of **Moderari**, an open-source project.",
 		config.C.Version,
-		embeds.Field("go", runtime.Version(), true),
+		embeds.Field("language", runtime.Version(), true),
 		embeds.Field("os", runtime.GOOS, true),
 		embeds.Field("latency", latency.String(), true),
 		embeds.Field("built with", "[andersfylling/disgord](https://github.com/andersfylling/disgord)", true),
