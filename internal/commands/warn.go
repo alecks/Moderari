@@ -63,7 +63,7 @@ func warn(ctx *gommand.Context) error {
 		}
 
 		old := db.UserModel{}
-		json.Unmarshal([]byte(oldString), &old)
+		_ = json.Unmarshal([]byte(oldString), &old)
 
 		warning := db.WarnModel{
 			Reason:    reason,
@@ -82,8 +82,8 @@ func warn(ctx *gommand.Context) error {
 
 		old.Warns[guildID][id] = warning
 
-		new, _ := json.Marshal(old)
-		db.Client.Set(key, new, 0)
+		bytes, _ := json.Marshal(old)
+		db.Client.Set(key, bytes, 0)
 	}()
 
 	_, err := ctx.Reply(embeds.Info(
