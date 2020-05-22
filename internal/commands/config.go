@@ -65,7 +65,7 @@ func config(ctx *gommand.Context) error {
 			"",
 		),
 		gommand.MenuButton{
-			Emoji:       "🔨️",
+			Emoji:       "🔨",
 			Name:        "Ban Threshold",
 			Description: "The ban threshold is the amount of warnings at which a member is banned.",
 		},
