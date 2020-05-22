@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"moderari/internal/db"
@@ -81,6 +82,28 @@ func warn(ctx *gommand.Context) error {
 		}
 
 		old.Warns[guildID][id] = warning
+
+		go func() {
+			guildString, err := db.Client.Get("guild:" + ctx.Message.GuildID.String()).Result()
+			if err != nil {
+				return
+			}
+
+			guild := db.GuildModel{}
+			_ = json.Unmarshal([]byte(guildString), &guild)
+			if guild.BanThreshold <= 0 {
+				return
+			}
+
+			if len(old.Warns) >= guild.BanThreshold {
+				_ = ctx.Session.BanMember(
+					context.Background(),
+					ctx.Message.GuildID,
+					member.User.ID,
+					&disgord.BanMemberParams{Reason: reason},
+				)
+			}
+		}()
 
 		bytes, _ := json.Marshal(old)
 		db.Client.Set(key, bytes, 0)

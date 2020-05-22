@@ -18,7 +18,7 @@ func init() {
 func config(ctx *gommand.Context) error {
 	menu := gommand.NewEmbedMenu(embeds.Info("Configuration", "", ""), ctx)
 
-	menu.NewChildMenu(
+	prefixMenu := menu.NewChildMenu(
 		embeds.Info(
 			"Prefix",
 			"Enter a new prefix.",
@@ -29,17 +29,45 @@ func config(ctx *gommand.Context) error {
 			Name:        "Prefix",
 			Description: "The prefix changes how you execute commands. If it's `|`, you'd use `|ping`.",
 		},
-	).AddBackButton()
+	)
+	{
+		prefixMenu.AddBackButton()
+		prefixMenu.NewChildMenu(
+			embeds.Info(
+				"User Prefix",
+				"Enter a new prefix.",
+				"",
+			),
+			gommand.MenuButton{
+				Emoji:       "😛",
+				Name:        "User",
+				Description: "This changes the prefix for *you*, not the entire server. It'll apply everywhere.",
+			},
+		).AddBackButton()
+		prefixMenu.NewChildMenu(
+			embeds.Info(
+				"Server Prefix",
+				"Enter a new prefix.",
+				"",
+			),
+			gommand.MenuButton{
+				Emoji:       "👨‍👩‍👧‍👦",
+				Name:        "Server",
+				Description: "This changes the prefix for everyone in the server. It'll only apply here.",
+			},
+		).AddBackButton()
+	}
+
 	menu.NewChildMenu(
 		embeds.Info(
-			"Warn Threshold",
-			"Enter a new warn threshold.",
+			"Ban Threshold",
+			"Enter a new ban threshold.",
 			"",
 		),
 		gommand.MenuButton{
-			Emoji:       "⚠️",
-			Name:        "Warn Threshold",
-			Description: "The warn threshold is the amount of warnings at which a member is banned.",
+			Emoji:       "🔨️",
+			Name:        "Ban Threshold",
+			Description: "The ban threshold is the amount of warnings at which a member is banned.",
 		},
 	).AddBackButton()
 
