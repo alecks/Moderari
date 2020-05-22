@@ -20,6 +20,8 @@ type configModel struct {
 		Info  int `yaml:"info"`
 		Error int `yaml:"error"`
 	} `yaml:"colours"`
+	
+	Version string `yaml:"version"`
 }
 
 // C is the main configuration used by the program.

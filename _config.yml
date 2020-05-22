@@ -13,3 +13,5 @@ colours:
   info: 0x3b5bf9
   warning: 0xf79365
   error: 0xf76580
+
+version: v0.1.0

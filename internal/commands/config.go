@@ -11,11 +11,11 @@ func init() {
 		Name:        "config",
 		Description: "Configures the bot.",
 		Category:    utilCategory,
-		Function:    config,
+		Function:    configCmd,
 	})
 }
 
-func config(ctx *gommand.Context) error {
+func configCmd(ctx *gommand.Context) error {
 	menu := gommand.NewEmbedMenu(embeds.Info("Configuration", "", ""), ctx)
 
 	prefixMenu := menu.NewChildMenu(
