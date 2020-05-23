@@ -23,7 +23,6 @@ func main() {
 	router := gommand.NewRouter(&gommand.RouterConfig{
 		PrefixCheck: gommand.MultiplePrefixCheckers(gommand.MentionPrefix, gommand.StaticPrefix(config.C.Prefix)),
 	})
-
 	client := disgord.New(disgord.Config{
 		BotToken: config.C.Token,
 		// We can actually just use this logger in events; it's a member of Client.
