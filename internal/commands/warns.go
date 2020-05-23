@@ -54,7 +54,7 @@ func warns(ctx *gommand.Context) error {
 		return err
 	}
 
-	paginatorEmbeds := []*disgord.Embed{}
+	var paginatorEmbeds []*disgord.Embed
 	for id, v := range user.Warns[ctx.Message.GuildID.String()] {
 		if v.Severity < minSeverity {
 			continue
