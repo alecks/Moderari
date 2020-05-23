@@ -5,6 +5,7 @@ import (
 	"moderari/internal/commands"
 	"moderari/internal/config"
 	"moderari/internal/embeds"
+	"moderari/internal/events"
 	"reflect"
 	"time"
 
@@ -53,6 +54,7 @@ func main() {
 			return false
 		}
 	})
+	events.Register(client)
 	commands.Register(router)
 
 	router.Hook(client)
