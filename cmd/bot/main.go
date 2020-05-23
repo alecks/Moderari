@@ -6,6 +6,7 @@ import (
 	"moderari/internal/config"
 	"moderari/internal/embeds"
 	"moderari/internal/events"
+	"moderari/internal/http"
 	"reflect"
 	"time"
 
@@ -58,6 +59,9 @@ func main() {
 	commands.Register(router)
 
 	router.Hook(client)
+	go func() {
+		chk(http.Serve())
+	}()
 	chk(client.StayConnectedUntilInterrupted(context.Background()))
 }
 

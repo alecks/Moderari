@@ -4,4 +4,5 @@ package db
 type GuildModel struct {
 	BanThreshold int    `json:"ban_threshold"`
 	Prefix       string `json:"prefix"`
+	Gotcha       bool   `json:"gotcha"`
 }

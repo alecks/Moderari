@@ -20,3 +20,12 @@ func Error(title string, err error, report bool) *disgord.Embed {
 		Color:       config.C.Colors.Error,
 	}
 }
+
+// ErrorString instantiates an embed to be used to throw errors as strings.
+func ErrorString(title, message string) *disgord.Embed {
+	return &disgord.Embed{
+		Title:       title,
+		Description: message,
+		Color:       config.C.Colors.Error,
+	}
+}

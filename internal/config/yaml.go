@@ -11,6 +11,8 @@ type configModel struct {
 	Token     string `yaml:"token"`
 	Prefix    string `yaml:"prefix"`
 	SentryDSN string `yaml:"sentry-dsn"`
+	URL       string `yaml:"url"`
+	Address   string `yaml:"address"`
 	DB        struct {
 		Address  string `yaml:"address"`
 		Password string `yaml:"password"`
@@ -20,7 +22,7 @@ type configModel struct {
 		Info  int `yaml:"info"`
 		Error int `yaml:"error"`
 	} `yaml:"colours"`
-	
+
 	Version string `yaml:"version"`
 }
 
