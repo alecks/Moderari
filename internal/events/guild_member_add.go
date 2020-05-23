@@ -43,7 +43,7 @@ func init() {
 		message.Embeds = append(message.Embeds, embeds.Info(
 			"Hey! "+guild.Name+" is protected with Gotcha.",
 			fmt.Sprintf(
-				"To gain access, see %s/verify/%s.\nHere's [the source for Gotcha](https://github.com/fjah/gotcha).",
+				"To gain access, see %s/verify/%s.\n[Here](https://github.com/fjah/gotcha)'s the source.",
 				config.C.URL,
 				identifier,
 			),
