@@ -23,7 +23,7 @@ func about(ctx *gommand.Context) error {
 
 	_, err := ctx.Reply(embeds.Info(
 		"About "+strings.Title(ctx.BotUser.Username),
-		"This is an instance of **Moderari**, an open-source project.",
+		"This is an instance of **[Moderari](https://github.com/fjah/Moderari)**, an open-source project.",
 		config.C.Version,
 		embeds.Field("language", runtime.Version(), true),
 		embeds.Field("os", runtime.GOOS, true),
