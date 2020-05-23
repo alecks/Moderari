@@ -13,6 +13,7 @@ import (
 func init() {
 	cmds = append(cmds, &gommand.Command{
 		Name:        "userinfo",
+		Usage: "[member]",
 		Aliases:     []string{"ui", "profile", "user", "uinfo"},
 		Description: "Shows a user's profile.",
 		Category:    infoCategory,
