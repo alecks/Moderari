@@ -1,7 +1,12 @@
 package commands
 
 import (
+	"encoding/json"
+	"github.com/andersfylling/disgord"
+	"moderari/internal/config"
+	"moderari/internal/db"
 	"moderari/internal/embeds"
+	"strconv"
 
 	"github.com/auttaja/gommand"
 )
@@ -15,14 +20,39 @@ func init() {
 	})
 }
 
+// TODO: Message waiters don't stop when you go back to the parent page.
 func configCmd(ctx *gommand.Context) error {
+	guildKey := "guild:" + ctx.Message.GuildID.String()
+	userKey := "user:" + ctx.Message.Author.ID.String()
+
+	// TODO: This needs improved, uh, a lot.
+	guildString, err := db.Client.Get(guildKey).Result()
+	guild := db.GuildModel{
+		BanThreshold: 0,
+		Prefix:       config.C.Prefix,
+	}
+	if err != nil {
+		if err != db.Nil {
+			return err
+		}
+		_ = json.Unmarshal([]byte(guildString), &guild)
+	}
+	userString, err := db.Client.Get(userKey).Result()
+	user := db.UserModel{Warns: map[string]map[string]db.WarnModel{}}
+	if err != nil {
+		if err != db.Nil {
+			return err
+		}
+		_ = json.Unmarshal([]byte(userString), &user)
+	}
+
 	menu := gommand.NewEmbedMenu(embeds.Info("Configuration", "", ""), ctx)
 
 	prefixMenu := menu.NewChildMenu(
 		&gommand.ChildMenuOptions{
 			Embed: embeds.Info(
 				"Prefix",
-				"Enter a new prefix.",
+				"There are two types of prefixes. Please select one.",
 				"",
 			),
 			Button: &gommand.MenuButton{
@@ -39,12 +69,25 @@ func configCmd(ctx *gommand.Context) error {
 				Embed: embeds.Info(
 					"User Prefix",
 					"Enter a new prefix.",
-					"",
+					"Current: " + user.Prefix,
 				),
 				Button: &gommand.MenuButton{
 					Emoji:       "😛",
 					Name:        "User",
 					Description: "This changes the prefix for *you*, not the entire server. It'll apply everywhere.",
+				},
+				AfterAction: func() {
+					// TODO: Possibly implement a get/set interface?
+					res := ctx.WaitForMessage(func(_ disgord.Session, msg *disgord.Message) bool {
+						return msg.Author.ID == ctx.Message.Author.ID && msg.ChannelID == ctx.Message.ChannelID
+					})
+					user.Prefix = res.Content
+					go func() {
+						marshalled, _ := json.Marshal(user)
+						db.Client.Set(userKey, marshalled, 0)
+					}()
+
+					newPrefixMessage(res.Content, ctx)
 				},
 			},
 		).AddBackButton()
@@ -53,12 +96,24 @@ func configCmd(ctx *gommand.Context) error {
 				Embed: embeds.Info(
 					"Server Prefix",
 					"Enter a new prefix.",
-					"",
+					"Current: " + guild.Prefix,
 				),
 				Button: &gommand.MenuButton{
 					Emoji:       "👨‍👩‍👧‍👦",
 					Name:        "Server",
 					Description: "This changes the prefix for everyone in the server. It'll only apply here.",
+				},
+				AfterAction: func() {
+					res := ctx.WaitForMessage(func(_ disgord.Session, msg *disgord.Message) bool {
+						return msg.Author.ID == ctx.Message.Author.ID && msg.ChannelID == ctx.Message.ChannelID
+					})
+					guild.Prefix = res.Content
+					go func() {
+						marshalled, _ := json.Marshal(guild)
+						db.Client.Set(guildKey, marshalled, 0)
+					}()
+
+					newPrefixMessage(res.Content, ctx)
 				},
 			},
 		).AddBackButton()
@@ -69,16 +124,38 @@ func configCmd(ctx *gommand.Context) error {
 			Embed: embeds.Info(
 				"Ban Threshold",
 				"Enter a new ban threshold.",
-				"",
+				"Current: " + strconv.Itoa(guild.BanThreshold),
 			),
 			Button: &gommand.MenuButton{
 				Emoji:       "🔨",
 				Name:        "Ban Threshold",
 				Description: "The ban threshold is the amount of warnings at which a member is banned.",
 			},
+			AfterAction: func() {
+				res := ctx.WaitForMessage(func(_ disgord.Session, msg *disgord.Message) bool {
+					return msg.Author.ID == ctx.Message.Author.ID && msg.ChannelID == ctx.Message.ChannelID
+				})
+
+				newThreshold, err := strconv.Atoi(res.Content)
+				if err != nil {
+					_, _ = ctx.Reply("Invalid number.")
+					return
+				}
+				guild.BanThreshold = newThreshold
+				go func() {
+					marshalled, _ := json.Marshal(guild)
+					db.Client.Set(guildKey, marshalled, 0)
+				}()
+
+				_, _ = ctx.Reply("Ban threshold updated. Members will be banned once they reach", res.Content, "warnings.")
+			},
 		},
 	).AddBackButton()
 
 	_ = ctx.DisplayEmbedMenu(menu)
 	return nil
+}
+
+func newPrefixMessage(prefix string, ctx *gommand.Context) {
+	_, _ = ctx.Reply("Prefix updated. You can now use commands like so: `" + prefix + "config`.")
 }
