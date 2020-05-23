@@ -152,6 +152,34 @@ func configCmd(ctx *gommand.Context) error {
 		},
 	).AddBackButton()
 
+	menu.NewChildMenu(
+		&gommand.ChildMenuOptions{
+			Embed: embeds.Info(
+				"Gotcha",
+				"Gotcha has been toggled.",
+				"",
+			),
+			Button: &gommand.MenuButton{
+				Emoji:       "👀",
+				Name:        "Gotcha",
+				Description: "[Gotcha](https://github.com/fjah/gotcha) stops users on the same network from raiding your server.",
+			},
+			AfterAction: func() {
+				guild.Gotcha = !guild.Gotcha
+				message := "disabled"
+				if guild.Gotcha {
+					message = "enabled"
+				}
+				go func() {
+					marshalled, _ := json.Marshal(guild)
+					db.Client.Set(guildKey, marshalled, 0)
+				}()
+
+				_, _ = ctx.Reply("Gotcha is now", message + ".", "Members will receive a verification link when they join.")
+			},
+		},
+	).AddBackButton()
+
 	_ = ctx.DisplayEmbedMenu(menu)
 	return nil
 }
