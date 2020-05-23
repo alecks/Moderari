@@ -95,7 +95,7 @@ func warn(ctx *gommand.Context) error {
 				return
 			}
 
-			if len(old.Warns) >= guild.BanThreshold {
+			if len(old.Warns[guildID]) >= guild.BanThreshold {
 				_ = ctx.Session.BanMember(
 					context.Background(),
 					ctx.Message.GuildID,
