@@ -11,11 +11,13 @@ import (
 	"moderari/internal/db"
 	"moderari/internal/embeds"
 	"moderari/internal/http"
+	"time"
 )
 
 const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 func generateIdentifier() string {
+	rand.Seed(time.Now().UnixNano())
 	b := make([]byte, 8)
 	for i := range b {
 		b[i] = letters[rand.Int63()%int64(len(letters))]
