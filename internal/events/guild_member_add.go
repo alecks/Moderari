@@ -68,6 +68,10 @@ func init() {
 					"You seem to be on our blocklist. Have you joined the same server already today?",
 				)
 			}
+
+			if _, _, err := evt.Member.User.SendMsg(context.Background(), session, message); err != nil {
+				return
+			}
 		}()
 	}
 }
