@@ -12,8 +12,6 @@ require (
 	github.com/klauspost/compress v1.10.6 // indirect
 	github.com/sirupsen/logrus v1.6.0
 	go.uber.org/atomic v1.6.0 // indirect
-	go.uber.org/multierr v1.4.0 // indirect
-	go.uber.org/zap v1.13.0 // indirect
 	golang.org/x/crypto v0.0.0-20200510223506-06a226fb4e37 // indirect
 	golang.org/x/lint v0.0.0-20200302205851-738671d3881b // indirect
 	golang.org/x/net v0.0.0-20200520182314-0ba52f642ac2 // indirect
