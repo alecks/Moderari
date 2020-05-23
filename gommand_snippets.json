@@ -1,0 +1,7 @@
+{
+  "Gommand Command": {
+    "prefix": ["gmd", "gcmd"],
+		"body": ["package commands\n\nimport (\n	\"${1}/internal/embeds\"\n\n	\"github.com/auttaja/gommand\"\n)\n\nfunc init() {\n	cmds = append(cmds, &gommand.Command{\n		Name:        \"${2}\",\n		Aliases:     []string{\"${3}\"},\n		Description: \"${4}\",\n		Category:    ${5},\n		Function:    ${6},\n	})\n}\n\nfunc ${6}(ctx *gommand.Context) error {\n	${7}\n	latency, _ := ctx.Session.AvgHeartbeatLatency()\n\n	_, err := ctx.Reply(embeds.Info(\n		\"🏓 \"+latency.String(),\n		\"\",\n		\"\",\n	))\n	return err\n}\n"],
+    "description": "A simple command starter for auttaja/gommand."
+  }
+}
