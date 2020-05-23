@@ -19,3 +19,6 @@ config.yml
 
 # Built executables
 /bot
+
+# IntelliJ IDEA configs
+.idea/
