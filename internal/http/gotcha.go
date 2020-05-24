@@ -10,6 +10,7 @@ import (
 // Gotcha is the main gotcha handler.
 var Gotcha *gotcha.Server
 
+// Serve starts the gotcha server. This listens on `address` in the config.
 func Serve() error {
 	// TODO: Implement a renderer.
 	Gotcha = &gotcha.Server{
