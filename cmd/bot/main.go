@@ -37,18 +37,26 @@ func main() {
 				bytes := []byte(guild.Prefix)
 				l := len(bytes)
 
-				i := 0
-				for i != l {
-					b, err := r.GetChar()
-					if err != nil {
-						return false
-					}
-					if b != bytes[i] {
-						return false
-					}
-					i++
+				if res := prefixIterator(l, bytes, r); !res {
+					return false
 				}
 				ctx.Prefix = guild.Prefix
+				return true
+			},
+			func(ctx *gommand.Context, r *gommand.StringIterator) bool {
+				userString, err := db.Client.Get("user:" + ctx.Message.Author.ID.String()).Result()
+				user := db.UserModel{Prefix: config.C.Prefix}
+				if err == nil {
+					_ = json.Unmarshal([]byte(userString), &user)
+				}
+
+				bytes := []byte(user.Prefix)
+				l := len(bytes)
+
+				if res := prefixIterator(l, bytes, r); !res {
+					return false
+				}
+				ctx.Prefix = user.Prefix
 				return true
 			},
 		),
@@ -97,4 +105,19 @@ func chk(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func prefixIterator(l int, bytes []byte, r *gommand.StringIterator) bool {
+	i := 0
+	for i != l {
+		b, err := r.GetChar()
+		if err != nil {
+			return false
+		}
+		if b != bytes[i] {
+			return false
+		}
+		i++
+	}
+	return true
 }
