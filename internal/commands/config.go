@@ -187,6 +187,41 @@ func configCmd(ctx *gommand.Context) error {
 		},
 	).AddBackButton()
 
+	menu.NewChildMenu(
+		&gommand.ChildMenuOptions{
+			Embed: embeds.Info(
+				"Member Role",
+				"Enter the name of a new member role.",
+				"",
+			),
+			Button: &gommand.MenuButton{
+				Emoji:       "👱‍♂️",
+				Name:        "Member Role",
+				Description: "This is the role that is applied when a member authenticates with Gotcha.",
+			},
+			AfterAction: func() {
+				res := ctx.WaitForMessage(func(_ disgord.Session, msg *disgord.Message) bool {
+					return msg.Author.ID == ctx.Message.Author.ID && msg.ChannelID == ctx.Message.ChannelID
+				})
+				go ctx.Session.DeleteMessage(context.Background(), ctx.Message.ChannelID, res.ID)
+
+				roleArg, err := gommand.RoleTransformer(ctx, res.Content)
+				if err != nil || roleArg == nil {
+					_, _ = ctx.Reply("Invalid role.")
+					return
+				}
+
+				role := roleArg.(*disgord.Role)
+				guild.MemberRole = role.ID.String()
+				go func() {
+					marshalled, _ := json.Marshal(guild)
+					db.Client.Set(guildKey, marshalled, 0)
+				}()
+				_, _ = ctx.Reply("The member role has been changed to", role.Name+".")
+			},
+		},
+	).AddBackButton()
+
 	_ = ctx.DisplayEmbedMenu(menu)
 	return nil
 }
