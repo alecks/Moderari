@@ -58,6 +58,7 @@ func pardon(ctx *gommand.Context) error {
 		if err != nil {
 			return err
 		}
+
 		res := ctx.WaitForMessage(func(_ disgord.Session, msg *disgord.Message) bool {
 			return msg.Author.ID == ctx.Message.Author.ID && msg.ChannelID == ctx.Message.ChannelID
 		})
