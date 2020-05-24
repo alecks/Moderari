@@ -1,5 +1,7 @@
 # Moderari
 
+![build](https://github.com/fjah/Moderari/workflows/Go/badge.svg) ![discord](https://img.shields.io/discord/714026885390008401) ![go version](https://img.shields.io/github/go-mod/go-version/fjah/Moderari) ![commit activity](https://img.shields.io/github/commit-activity/m/fjah/Moderari)
+
 Moderari is a Discord bot focused that brings
 
 - really easy self-hosting;
