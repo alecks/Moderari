@@ -1,4 +1,4 @@
-module github.com/fjah/moderari
+module moderari
 
 go 1.14
 
