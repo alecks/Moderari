@@ -23,7 +23,7 @@ func init() {
 			},
 			{
 				Optional: true,
-				Function: gommand.UIntTransformer,
+				Function: gommand.IntTransformer,
 			},
 			{
 				Optional:  true,
