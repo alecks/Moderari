@@ -4,14 +4,15 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/andersfylling/disgord"
-	"github.com/getsentry/sentry-go"
 	"math/rand"
 	"moderari/internal/config"
 	"moderari/internal/db"
 	"moderari/internal/embeds"
 	"moderari/internal/http"
 	"time"
+
+	"github.com/andersfylling/disgord"
+	"github.com/getsentry/sentry-go"
 )
 
 const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -69,6 +70,22 @@ func init() {
 					"Uhh...",
 					"You seem to be on our blocklist. Have you joined the same server already today?",
 				)
+			}
+
+			if guildDoc.MemberRole != "" {
+				if err := session.AddGuildMemberRole(
+					context.Background(),
+					evt.Member.GuildID,
+					evt.Member.User.ID,
+					disgord.ParseSnowflakeString(guildDoc.MemberRole),
+				); err != nil {
+					message.Embeds[0] = embeds.ErrorString(
+						"Uhh...",
+						"Sorry, but I'm not able to add the role to you. Please contact server staff.",
+					)
+					_, _, _ = evt.Member.User.SendMsg(context.Background(), session, message)
+					return
+				}
 			}
 
 			if _, _, err := evt.Member.User.SendMsg(context.Background(), session, message); err != nil {
