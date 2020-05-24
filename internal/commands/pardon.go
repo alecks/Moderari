@@ -54,6 +54,18 @@ func pardon(ctx *gommand.Context) error {
 			removedWarns++
 		}
 	} else {
+		_, err = ctx.Reply(embeds.Info("Are you sure?", "This will clear all warnings.", ""))
+		if err != nil {
+			return err
+		}
+		res := ctx.WaitForMessage(func(_ disgord.Session, msg *disgord.Message) bool {
+			return msg.Author.ID == ctx.Message.Author.ID && msg.ChannelID == ctx.Message.ChannelID
+		})
+		if res.Content[0] != 'y' {
+			ctx.Reply("Cancelled.")
+			return nil
+		}
+
 		removedWarns = len(old.Warns[guildID])
 		delete(old.Warns, guildID)
 	}
