@@ -15,10 +15,11 @@ import (
 
 func init() {
 	cmds = append(cmds, &gommand.Command{
-		Name:        "config",
-		Description: "Configures the bot.",
-		Category:    utilCategory,
-		Function:    configCmd,
+		Name:                 "config",
+		Description:          "Configures the bot.",
+		Category:             utilCategory,
+		PermissionValidators: []gommand.PermissionValidator{gommand.ADMINISTRATOR},
+		Function:             configCmd,
 	})
 }
 
