@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/andersfylling/disgord"
 	"moderari/internal/config"
@@ -81,6 +82,8 @@ func configCmd(ctx *gommand.Context) error {
 					res := ctx.WaitForMessage(func(_ disgord.Session, msg *disgord.Message) bool {
 						return msg.Author.ID == ctx.Message.Author.ID && msg.ChannelID == ctx.Message.ChannelID
 					})
+					go ctx.Session.DeleteMessage(context.Background(), ctx.Message.ChannelID, res.ID)
+
 					user.Prefix = res.Content
 					go func() {
 						marshalled, _ := json.Marshal(user)
@@ -107,6 +110,8 @@ func configCmd(ctx *gommand.Context) error {
 					res := ctx.WaitForMessage(func(_ disgord.Session, msg *disgord.Message) bool {
 						return msg.Author.ID == ctx.Message.Author.ID && msg.ChannelID == ctx.Message.ChannelID
 					})
+					go ctx.Session.DeleteMessage(context.Background(), ctx.Message.ChannelID, res.ID)
+
 					guild.Prefix = res.Content
 					go func() {
 						marshalled, _ := json.Marshal(guild)
@@ -135,6 +140,7 @@ func configCmd(ctx *gommand.Context) error {
 				res := ctx.WaitForMessage(func(_ disgord.Session, msg *disgord.Message) bool {
 					return msg.Author.ID == ctx.Message.Author.ID && msg.ChannelID == ctx.Message.ChannelID
 				})
+				go ctx.Session.DeleteMessage(context.Background(), ctx.Message.ChannelID, res.ID)
 
 				newThreshold, err := strconv.Atoi(res.Content)
 				if err != nil {
