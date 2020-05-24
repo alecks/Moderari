@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/andersfylling/disgord v0.17.1
-	github.com/auttaja/gommand v0.0.0-20200523004444-4309e093c18b
+	github.com/auttaja/gommand v0.0.0-20200524151915-ab1d41798717
 	github.com/fjah/gotcha v0.0.0-20200523114547-e72f149b9dd3
 	github.com/getsentry/sentry-go v0.6.1
 	github.com/go-redis/redis v6.15.8+incompatible

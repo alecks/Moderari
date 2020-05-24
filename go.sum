@@ -15,6 +15,8 @@ github.com/andersfylling/snowflake/v4 v4.0.2/go.mod h1:4lIbDTtWCTaYBCZVVIDjIH8xb
 github.com/armon/consul-api v0.0.0-20180202201655-eb2c6b5be1b6/go.mod h1:grANhF5doyWs3UAsr3K4I6qtAmlQcZDesFNEHPZAzj8=
 github.com/auttaja/gommand v0.0.0-20200523004444-4309e093c18b h1:WmgkfeDLzfkKx738Dli/0u04TZokBEiIleMhBGxNBzY=
 github.com/auttaja/gommand v0.0.0-20200523004444-4309e093c18b/go.mod h1:vSO1OyOYVpeTrIJsQCCgjWzWhopp9qggy+90dcm1Vco=
+github.com/auttaja/gommand v0.0.0-20200524151915-ab1d41798717 h1:iO8kDZ1GX2kbQEYv8ujvoDS3yIyrQjdnUlqHu0G3SO8=
+github.com/auttaja/gommand v0.0.0-20200524151915-ab1d41798717/go.mod h1:vSO1OyOYVpeTrIJsQCCgjWzWhopp9qggy+90dcm1Vco=
 github.com/aymerick/raymond v2.0.3-0.20180322193309-b565731e1464+incompatible/go.mod h1:osfaiScAUVup+UC9Nfq76eWqDhXlp+4UYaA8uhTBO6g=
 github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0/go.mod h1:4Zcjuz89kmFXt9morQgcfYZAYZ5n8WHjt81YYWIwtTM=
 github.com/coreos/etcd v3.3.10+incompatible/go.mod h1:uF7uidLiAD3TWHmW31ZFd/JWoc32PjwdhPthX9715RE=
