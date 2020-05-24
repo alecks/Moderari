@@ -3,6 +3,10 @@
 token: bot_token
 prefix: "!"
 sentry-dsn: https://your@sentry.ingest.sentry.io/dsn
+# This is the URL to be shown by the bot. It can't have a trailing slash.
+url: http://example.com
+# This is the address to actually listen on. In most cases, this'll just be `:80` or `:443`.
+address: :80
 
 db:
   address: 127.0.0.1:6379
