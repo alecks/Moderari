@@ -9,7 +9,9 @@ Moderari is a Discord bot focused that brings
 - scalability; and
 - powerfulness
 
-together. Its core is *really* lightweight, using about 25MB RAM despite running both a bot and a HTTP server.
+together. Its core is *really* lightweight, using about 20MB RAM (at minimum*) despite running both a bot and a HTTP server.
+
+\*The maximum is generally around 100mb unless you have very large guilds or shard the bot.
 
 ## Self-hosting
 
