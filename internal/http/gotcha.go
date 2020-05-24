@@ -1,9 +1,10 @@
 package http
 
 import (
-	"github.com/fjah/gotcha"
 	"moderari/internal/config"
 	"time"
+
+	"github.com/fjah/gotcha"
 )
 
 // Gotcha is the main gotcha handler.
@@ -14,7 +15,7 @@ func Serve() error {
 	Gotcha = &gotcha.Server{
 		Address: config.C.Address,
 		// TODO: Make this customisable.
-		Timeout: 30 * time.Hour,
+		Timeout: 1 * time.Hour,
 	}
 	return Gotcha.Serve()
 }
