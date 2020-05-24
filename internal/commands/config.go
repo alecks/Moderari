@@ -34,15 +34,17 @@ func configCmd(ctx *gommand.Context) error {
 		Prefix:       config.C.Prefix,
 	}
 	if err != db.Nil {
-		return err
-	} else if err == nil {
+		if err != nil {
+			return err
+		}
 		_ = json.Unmarshal([]byte(guildString), &guild)
 	}
 	userString, err := db.Client.Get(userKey).Result()
 	user := db.UserModel{Warns: map[string]map[string]db.WarnModel{}}
 	if err != db.Nil {
-		return err
-	} else if err == nil {
+		if err != nil {
+			return err
+		}
 		_ = json.Unmarshal([]byte(userString), &user)
 	}
 
