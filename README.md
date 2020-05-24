@@ -9,7 +9,9 @@ Moderari is a Discord bot focused that brings
 - scalability; and
 - powerfulness
 
-together. Its core is *really* lightweight, using about 25MB RAM despite running both a bot and a HTTP server.
+together. Its core is *really* lightweight, using about 20MB RAM (at minimum*) despite running both a bot and a HTTP server.
+
+\*The maximum is generally around 100mb unless you have very large guilds or shard the bot.
 
 ## Self-hosting
 
@@ -20,4 +22,4 @@ Moderari is licensed under v2 of the Apache License, so self-hosting is permitte
 
 These can be obtained from [the releases page](https://github.com/fjah/Moderari/releases) and [the Redis website](https://redis.io) respectively.
 
-You can also deploy Moderari with [Docker](https://docker.io); see the `build/package` directory. Simply clone this repository, [install Go](https://golang.org), [Docker](https://docker.io) and [Redis](https://redis.io), then run `./build/package/update.sh`. This is the recommended way of deploying Moderari in *production*.
+You can also deploy Moderari with [Docker](https://docker.io); see the `build/package` directory. Simply clone this repository (get `git` if you haven't already), install [Docker](https://docker.io) and [Redis](https://redis.io), then run `./build/package/update.sh`. This is the recommended way of deploying Moderari in *production*.
