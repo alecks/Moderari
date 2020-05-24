@@ -1,7 +1,7 @@
 {
   "Gommand Command": {
     "prefix": ["gmd", "gcmd"],
-		"body": ["package commands\n\nimport (\n	\"${WORKSPACE_NAME}/internal/embeds\"\n\n	\"github.com/auttaja/gommand\"\n)\n\nfunc init() {\n	cmds = append(cmds, &gommand.Command{\n		Name:        \"${TM_FILENAME_BASE}\",\n		Aliases:     []string{\"${3}\"},\n		Description: \"${4}\",\n		Category:    ${5},\n		Function:    ${TM_FILENAME_BASE},\n	})\n}\n\nfunc ${TM_FILENAME_BASE}(ctx *gommand.Context) error {\n	${7}\n	latency, _ := ctx.Session.AvgHeartbeatLatency()\n\n	_, err := ctx.Reply(embeds.Info(\n		\"🏓 \"+latency.String(),\n		\"\",\n		\"\",\n	))\n	return err\n}\n"],
+    "body": ["package commands\n\nimport (\n\u0009\"${WORKSPACE_NAME}/internal/embeds\"\n\n\u0009\"github.com/auttaja/gommand\"\n)\n\nfunc init() {\n\u0009cmds = append(cmds, &gommand.Command{\n\u0009\u0009Name:        \"${TM_FILENAME_BASE}\",\n\u0009\u0009Aliases:     []string{\"${3}\"},\n\u0009\u0009Description: \"${4}\",\n\u0009\u0009Category:    ${5},\n\u0009\u0009Function:    ${TM_FILENAME_BASE},\n\u0009})\n}\n\nfunc ${TM_FILENAME_BASE}(ctx *gommand.Context) error {\n\u0009${7}\n\u0009latency, _ := ctx.Session.AvgHeartbeatLatency()\n\n\u0009_, err := ctx.Reply(embeds.Info(\n\u0009\u0009\"🏓 \"+latency.String(),\n\u0009\u0009\"\",\n\u0009\u0009\"\",\n\u0009))\n\u0009return err\n}\n"],
     "description": "A simple command starter for auttaja/gommand."
   }
 }
