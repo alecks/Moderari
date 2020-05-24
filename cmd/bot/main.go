@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"moderari/internal/commands"
 	"moderari/internal/config"
+	"moderari/internal/db"
 	"moderari/internal/embeds"
 	"moderari/internal/events"
 	"moderari/internal/http"
@@ -23,7 +25,33 @@ func main() {
 	defer sentry.Flush(2 * time.Second)
 
 	router := gommand.NewRouter(&gommand.RouterConfig{
-		PrefixCheck: gommand.MultiplePrefixCheckers(gommand.MentionPrefix, gommand.StaticPrefix(config.C.Prefix)),
+		PrefixCheck: gommand.MultiplePrefixCheckers(
+			gommand.MentionPrefix,
+			func(ctx *gommand.Context, r *gommand.StringIterator) bool {
+				guildString, err := db.Client.Get("guild:" + ctx.Message.GuildID.String()).Result()
+				guild := db.GuildModel{Prefix: config.C.Prefix}
+				if err == nil {
+					_ = json.Unmarshal([]byte(guildString), &guild)
+				}
+
+				bytes := []byte(guild.Prefix)
+				l := len(bytes)
+
+				i := 0
+				for i != l {
+					b, err := r.GetChar()
+					if err != nil {
+						return false
+					}
+					if b != bytes[i] {
+						return false
+					}
+					i++
+				}
+				ctx.Prefix = guild.Prefix
+				return true
+			},
+		),
 	})
 	client := disgord.New(disgord.Config{
 		BotToken: config.C.Token,
