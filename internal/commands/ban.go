@@ -63,7 +63,12 @@ func ban(ctx *gommand.Context) error {
 
 	_, err := ctx.Reply(embeds.Info(
 		"Banned",
-		fmt.Sprintf("**%s** has been banned by **%s**.", member.User.Username, ctx.Message.Author.Username), ""),
+		fmt.Sprintf(
+			"**%s** has been banned by **%s** for \"%s\".",
+			member.User.Username,
+			ctx.Message.Author.Username,
+			reason,
+		), ""),
 	)
 	return err
 }
