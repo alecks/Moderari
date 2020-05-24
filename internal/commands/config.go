@@ -174,16 +174,18 @@ func configCmd(ctx *gommand.Context) error {
 			},
 			AfterAction: func() {
 				guild.Gotcha = !guild.Gotcha
-				message := "disabled"
+				enabled := "disabled"
+				message := ""
 				if guild.Gotcha {
-					message = "enabled"
+					enabled = "enabled"
+					message = "Members will receive a verification link when they join."
 				}
 				go func() {
 					marshalled, _ := json.Marshal(guild)
 					db.Client.Set(guildKey, marshalled, 0)
 				}()
 
-				_, _ = ctx.Reply("Gotcha is now", message+".", "Members will receive a verification link when they join.")
+				_, _ = ctx.Reply("Gotcha is now", enabled+".", message)
 			},
 		},
 	).AddBackButton()
