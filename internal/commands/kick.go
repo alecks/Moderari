@@ -49,7 +49,12 @@ func kick(ctx *gommand.Context) error {
 
 	_, err := ctx.Reply(embeds.Info(
 		"Kicked",
-		fmt.Sprintf("%s has been kicked by %s.", member.User.Username, ctx.Message.Author.Username), ""),
+		fmt.Sprintf(
+			"**%s** has been kicked by **%s** for \"%s\".",
+			member.User.Username,
+			ctx.Message.Author.Username,
+			reason,
+		), ""),
 	)
 	return err
 }
