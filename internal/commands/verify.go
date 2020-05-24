@@ -34,6 +34,13 @@ func verify(ctx *gommand.Context) error {
 	}
 	guild := db.GuildModel{}
 	_ = json.Unmarshal([]byte(guildString), &guild)
+	if guild.MemberRole == "" {
+		_, err = ctx.Reply(embeds.ErrorString(
+			"Uhh...",
+			"You don't have a member role set.",
+		))
+		return err
+	}
 
 	member := ctx.Args[0].(*disgord.Member)
 	if err := ctx.Session.AddGuildMemberRole(
