@@ -3,11 +3,12 @@ package commands
 import (
 	"context"
 	"encoding/json"
-	"github.com/andersfylling/disgord"
 	"moderari/internal/config"
 	"moderari/internal/db"
 	"moderari/internal/embeds"
 	"strconv"
+
+	"github.com/andersfylling/disgord"
 
 	"github.com/auttaja/gommand"
 )
@@ -32,18 +33,16 @@ func configCmd(ctx *gommand.Context) error {
 		BanThreshold: 0,
 		Prefix:       config.C.Prefix,
 	}
-	if err != nil {
-		if err != db.Nil {
-			return err
-		}
+	if err != db.Nil {
+		return err
+	} else if err == nil {
 		_ = json.Unmarshal([]byte(guildString), &guild)
 	}
 	userString, err := db.Client.Get(userKey).Result()
 	user := db.UserModel{Warns: map[string]map[string]db.WarnModel{}}
-	if err != nil {
-		if err != db.Nil {
-			return err
-		}
+	if err != db.Nil {
+		return err
+	} else if err == nil {
 		_ = json.Unmarshal([]byte(userString), &user)
 	}
 
@@ -70,7 +69,7 @@ func configCmd(ctx *gommand.Context) error {
 				Embed: embeds.Info(
 					"User Prefix",
 					"Enter a new prefix.",
-					"Current: " + user.Prefix,
+					"Current: "+user.Prefix,
 				),
 				Button: &gommand.MenuButton{
 					Emoji:       "😛",
@@ -99,7 +98,7 @@ func configCmd(ctx *gommand.Context) error {
 				Embed: embeds.Info(
 					"Server Prefix",
 					"Enter a new prefix.",
-					"Current: " + guild.Prefix,
+					"Current: "+guild.Prefix,
 				),
 				Button: &gommand.MenuButton{
 					Emoji:       "👨‍👩‍👧‍👦",
@@ -129,7 +128,7 @@ func configCmd(ctx *gommand.Context) error {
 			Embed: embeds.Info(
 				"Ban Threshold",
 				"Enter a new ban threshold.",
-				"Current: " + strconv.Itoa(guild.BanThreshold),
+				"Current: "+strconv.Itoa(guild.BanThreshold),
 			),
 			Button: &gommand.MenuButton{
 				Emoji:       "🔨",
@@ -181,7 +180,7 @@ func configCmd(ctx *gommand.Context) error {
 					db.Client.Set(guildKey, marshalled, 0)
 				}()
 
-				_, _ = ctx.Reply("Gotcha is now", message + ".", "Members will receive a verification link when they join.")
+				_, _ = ctx.Reply("Gotcha is now", message+".", "Members will receive a verification link when they join.")
 			},
 		},
 	).AddBackButton()
