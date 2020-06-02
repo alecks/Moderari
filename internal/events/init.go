@@ -4,7 +4,7 @@ import "github.com/andersfylling/disgord"
 
 var events = map[string]interface{}{}
 
-// Register registers all events in the `events` slice.
+// Register registers all events in the `events` map.
 func Register(client *disgord.Client) {
 	for i, v := range events {
 		client.On(i, v)
